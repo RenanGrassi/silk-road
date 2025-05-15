@@ -1,1 +1,12 @@
 
+run-auth:
+	python3 server_authentication/auth_server.py
+
+run-core:
+	python3 server_core/main_server.py
+
+run-client:
+	python3 client/main.py
+
+init-db:
+	python3 database/init_db.py
