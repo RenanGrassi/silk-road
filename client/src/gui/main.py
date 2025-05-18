@@ -10,9 +10,8 @@ from PySide6.QtCore import QTimer
 import asyncio
 import sys
 from src.utils.client_socket import SocketClient
-from PyQt6.QtWidgets import QApplication
-from client.src.gui.main_window import MainWindow
-from client.src.gui.login_window import LoginWindow
+from src.gui.main_window import MainWindow
+from src.gui.login_window import LoginWindow
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -23,8 +22,6 @@ if __name__ == "__main__":
         window = MainWindow()
         window.show()
         sys.exit(app.exec())
-
-
 
 
 class ClientGUI(QWidget):

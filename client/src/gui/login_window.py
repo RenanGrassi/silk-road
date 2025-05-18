@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton
+
 
 class LoginWindow(QDialog):
     def __init__(self):
@@ -27,4 +28,4 @@ class LoginWindow(QDialog):
         email = self.email_input.text()
         senha = self.senha_input.text()
         print("Tentando login com:", email, senha)
-        # Vai vir uma chamada de socket do client para autenticação 
+        # Vai vir uma chamada de socket do client para autenticação

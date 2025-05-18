@@ -5,5 +5,5 @@ COPY src/ ./src
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 ENV PYTHONPATH=/app
-
-CMD ["python", "/app/src/main.py"]
+ENV PYTHONUNBUFFERED=1
+CMD ["uvicorn", "src.main", "--reload", "--log-level", "debug"]
