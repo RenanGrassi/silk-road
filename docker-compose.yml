@@ -15,16 +15,16 @@ services:
     volumes:
       - ./client/src:/app/src
       - ./client/requirements.txt:/app/requirements.txt
+      - /tmp/.X11-unix:/tmp/.X11-unix
     networks:
       - silk-road
     ports:
-      - "6080;/:6080"  # Web
-      - "5900:5900"  # VNC (opcional)
+      - "6080:6080"
     depends_on:
       - server
     environment:
-      - DISPLAY=:1.0
-    command: python src/main.py
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
   server:
     container_name: silk-road-server
     ports:

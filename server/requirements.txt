@@ -1,2 +1,4 @@
 watchfiles
 sqlalchemy
+pydantic
+uvicorn

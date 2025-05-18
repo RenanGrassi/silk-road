@@ -1,13 +1,14 @@
 import asyncio
-from src.communication import handle_client
+from src.utils.server_socket import SocketServer
 
 
 async def main():
-    server = await asyncio.start_server(handle_client, "0.0.0.0", 65432)
-    addr = server.sockets[0].getsockname()
-    print(f"Escutando em {addr}")
-    async with server:
-        await server.serve_forever()
+    server = SocketServer()
+    await server.start()
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    """
+    Função principal para iniciar o servidor.
+    """
+    asyncio.run(main())
