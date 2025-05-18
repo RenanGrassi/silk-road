@@ -1,5 +1,3 @@
-version: '3.8'
-
 networks:
   silk-road:
     driver: bridge
@@ -18,8 +16,6 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
     networks:
       - silk-road
-    ports:
-      - "6080:6080"
     depends_on:
       - server
     environment:

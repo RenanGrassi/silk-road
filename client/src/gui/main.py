@@ -10,6 +10,21 @@ from PySide6.QtCore import QTimer
 import asyncio
 import sys
 from src.utils.client_socket import SocketClient
+from PyQt6.QtWidgets import QApplication
+from client.src.gui.main_window import MainWindow
+from client.src.gui.login_window import LoginWindow
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+
+    # Abre a tela de login primeiro
+    login = LoginWindow()
+    if login.exec():  # exec() bloqueia até a janela ser fechada com accept()
+        window = MainWindow()
+        window.show()
+        sys.exit(app.exec())
+
+
 
 
 class ClientGUI(QWidget):
