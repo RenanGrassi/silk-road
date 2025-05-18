@@ -17,7 +17,7 @@ async def send_msg(writer, msg_bytes):
     await writer.drain()
 
 
-async def handle_client(reader, writer):
+'''async def handle_client(reader, writer):
     addr = writer.get_extra_info("peername")
     print(f"Conectado: {addr}")
     try:
@@ -35,7 +35,56 @@ async def handle_client(reader, writer):
     except asyncio.IncompleteReadError as e:
         print(e)
     writer.close()
-    await writer.wait_closed()
+    await writer.wait_closed()'''
+
+async def handle_client(reader, writer):
+    addr = writer.get_extra_info("peername")
+    print(f"Conectado: {addr}")
+    try:
+        while True:
+            data = await read_msg(reader)
+            if not data:
+                break
+
+            try:
+                mensagem = interpretar_mensagem(data)
+                tipo = mensagem["tipo"]
+                dados = mensagem["dados"]
+            except Exception as e:
+                erro = mensagem_erro(f"Mensagem malformada: {e}")
+                await send_msg(writer, erro)
+                continue
+
+            print(f"Recebido de {addr}: {mensagem}")
+
+            # Se for uma operação que exige autenticação (exemplo: CRIAR_LOJA)
+            if tipo == "CRIAR_LOJA":
+                token = dados.get("token")
+                auth_result = await verificar_token_com_auth(token)
+
+                if auth_result["tipo"] == "ERRO":
+                    erro = mensagem_erro("Token inválido ou não autorizado.")
+                    await send_msg(writer, erro)
+                    continue
+
+                # Aqui você pode criar a loja normalmente
+                loja_nome = dados.get("nome_loja")
+                print(f"Token válido. Criando loja: {loja_nome}")
+                resposta = mensagem_sucesso({"mensagem": f"Loja '{loja_nome}' criada com sucesso."})
+                await send_msg(writer, resposta)
+
+            else:
+                # Echo padrão para testes
+                echo = mensagem_sucesso({"echo": dados})
+                await send_msg(writer, echo)
+
+    except asyncio.IncompleteReadError as e:
+        print(f"Conexão encerrada por {addr}")
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+    finally:
+        writer.close()
+        await writer.wait_closed()
 
 async def verificar_token_com_auth(token: str):
     try:
