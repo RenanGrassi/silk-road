@@ -1,6 +1,7 @@
 import sqlite3
 from pathlib import Path
 
+# TODO - Passar isso daqui pra um arquivo SQL
 # Caminho do banco de dados
 db_path = Path(__file__).parent / "silk_road.db"
 
@@ -9,27 +10,32 @@ conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
 # Tabela de usuários
-cursor.execute("""
+cursor.execute(
+    """
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome_usuario TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
     senha TEXT NOT NULL
 );
-""")
+"""
+)
 
 # Tabela de lojas
-cursor.execute("""
+cursor.execute(
+    """
 CREATE TABLE IF NOT EXISTS lojas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
     usuario_id INTEGER NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
-""")
+"""
+)
 
 # Tabela de produtos
-cursor.execute("""
+cursor.execute(
+    """
 CREATE TABLE IF NOT EXISTS produtos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
@@ -42,10 +48,12 @@ CREATE TABLE IF NOT EXISTS produtos (
     loja_id INTEGER NOT NULL,
     FOREIGN KEY (loja_id) REFERENCES lojas(id)
 );
-""")
+"""
+)
 
 # Tabela de transações
-cursor.execute("""
+cursor.execute(
+    """
 CREATE TABLE IF NOT EXISTS transacoes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     comprador_id INTEGER NOT NULL,
@@ -55,4 +63,5 @@ CREATE TABLE IF NOT EXISTS transacoes (
     FOREIGN KEY (comprador_id) REFERENCES usuarios(id),
     FOREIGN KEY (produto_id) REFERENCES produtos(id)
 );
-""")
+"""
+)

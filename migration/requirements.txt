@@ -1,0 +1,2 @@
+alembic>=1.12
+SQLAlchemy>=2.0

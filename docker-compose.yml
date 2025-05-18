@@ -1,12 +1,53 @@
+version: '3.8'
 
-run-auth:
-	python3 server_authentication/auth_server.py
+networks:
+  silk-road:
+    driver: bridge
 
-run-core:
-	python3 server_core/main_server.py
-
-run-client:
-	python3 client/main.py
-
-init-db:
-	python3 database/init_db.py
+services:
+  # auth:
+  #   build: ./auth
+  # core:
+  #   build: python3 server_core/main_server.py
+  client:
+    build: ./client
+    container_name: silk-road-client
+    volumes:
+      - ./client/src:/app/src
+      - ./client/requirements.txt:/app/requirements.txt
+    networks:
+      - silk-road
+    depends_on:
+      - server
+    command: python src/main.py
+  server:
+    container_name: silk-road-server
+    ports:
+      - "65432:65432"
+    build: ./server
+    volumes:
+      - ./server/src:/app/src
+      - ./server/requirements.txt:/app/requirements.txt
+      - ./data:/app/data        # Banco SQLite persistente
+    networks:
+      - silk-road
+  database:
+    container_name: silk-road-db
+    image: nouchka/sqlite3
+    volumes:
+      - ./data:/db
+      - ./database/init-db.sql:/init.sql
+    networks:
+      - silk-road
+  migrations:
+    container_name: silk-road-migrations
+    build: ./migration
+    volumes:
+      - ./data:/app/data        # Banco SQLite persistente
+      - ./migration:/app                  # Código + Alembic
+    working_dir: /app
+    command: alembic upgrade head
+    depends_on:
+      - database
+    networks:
+      - silk-road
