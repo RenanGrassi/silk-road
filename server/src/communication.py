@@ -1,6 +1,7 @@
 import asyncio
 import json
 import struct
+from mensagens.protocolo import interpretar_mensagem, criar_mensagem, mensagem_erro, mensagem_sucesso
 
 
 async def read_msg(reader):
@@ -35,3 +36,18 @@ async def handle_client(reader, writer):
         print(e)
     writer.close()
     await writer.wait_closed()
+
+async def verificar_token_com_auth(token: str):
+    try:
+        reader, writer = await asyncio.open_connection("127.0.0.1", 5000)  # IP do auth_server maquina local loopback
+        msg = criar_mensagem("VERIFICAR_TOKEN", {"token": token})
+        writer.write(msg)
+        await writer.drain()
+
+        data = await reader.read(2048)
+        resposta = interpretar_mensagem(data)
+        writer.close()
+        await writer.wait_closed()
+        return resposta
+    except Exception as e:
+        return {"tipo": "ERRO", "dados": {"motivo": str(e)}}
