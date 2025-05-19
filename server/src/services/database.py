@@ -1,11 +1,8 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-engine = create_engine("sqlite:///data/database.sqlite", echo=True)
-
-
-class Base(DeclarativeBase):
-    pass
+engine = create_engine("sqlite:////app/data/database.sqlite", echo=True)
+Base = declarative_base()
 
 
 def provide_session():
@@ -14,14 +11,14 @@ def provide_session():
             Session = sessionmaker(bind=engine)
             session = Session()
             try:
-                result = func(session, *args, **kwargs)
+                result = func(*args, session=session, **kwargs)
                 session.commit()
+                return result
             except Exception as e:
                 session.rollback()
                 raise e
             finally:
                 session.close()
-                return result
 
         return wrapped
 

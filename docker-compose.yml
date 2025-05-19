@@ -40,15 +40,3 @@ services:
       - ./database/init-db.sql:/init.sql
     networks:
       - silk-road
-  migrations:
-    container_name: silk-road-migrations
-    build: ./migration
-    volumes:
-      - ./data:/app/data        # Banco SQLite persistente
-      - ./migration:/app                  # Código + Alembic
-    working_dir: /app
-    command: alembic upgrade head
-    depends_on:
-      - database
-    networks:
-      - silk-road

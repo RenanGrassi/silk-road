@@ -6,11 +6,10 @@ class AbstractRoute(ABC):
     Abstract base class for routes.
     """
 
-    @property
-    @abstractmethod
+    @classmethod
     def group(self) -> str:
         """
         The path of the route.
         :return: The path of the route.
         """
-        pass
+        raise NotImplementedError()

@@ -2,3 +2,5 @@ watchfiles
 sqlalchemy
 pydantic
 uvicorn
+bcrypt
+pyjwt

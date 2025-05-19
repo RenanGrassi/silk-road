@@ -16,7 +16,7 @@ class AbstractCRUDService(ABC):
         """
         pass
 
-    @provide_session
+    @provide_session()
     def create(self, session: sessionmaker, data: dict):
         """
         Create a new resource.
@@ -27,7 +27,7 @@ class AbstractCRUDService(ABC):
         session.add(resource)
         return resource
 
-    @provide_session
+    @provide_session()
     def read(self, session: sessionmaker, resource_id: int):
         """
         Read a resource by its ID.
@@ -36,7 +36,7 @@ class AbstractCRUDService(ABC):
         """
         return session.query(self.model).filter_by(id=resource_id).first()
 
-    @provide_session
+    @provide_session()
     def update(self, session, resource_id, data):
         """
         Update a resource by its ID.
@@ -49,15 +49,15 @@ class AbstractCRUDService(ABC):
             setattr(resource, key, value)
         return resource
 
-    @provide_session
-    def list(self, session: sessionmaker):
+    @provide_session()
+    def list(self, session: sessionmaker, conf: dict = None):
         """
         List all resources.
         :return: A list of all resources.
         """
         return session.query(self.model).all()
 
-    @provide_session
+    @provide_session()
     def delete(self, session, resource_id):
         """
         Delete a resource by its ID.
@@ -70,7 +70,7 @@ class AbstractCRUDService(ABC):
             return True
         return False
 
-    @provide_session
+    @provide_session()
     def delete_all(self, session: sessionmaker):
         """
         Delete all resources.

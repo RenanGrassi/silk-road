@@ -3,7 +3,7 @@ import json
 
 
 class SocketClient:
-    def __init__(self, host="server", port=65432):
+    def __init__(self, host="silk-road-server", port=65432):
         self.host = host
         self.port = port
         self.reader = None

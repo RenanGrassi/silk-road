@@ -69,4 +69,4 @@ class ClientGUI(QWidget):
     def send_message(self):
         msg = self.input_line.text()
         self.input_line.clear()
-        self.loop.create_task(self.client.send({"msg": msg}))
+        self.loop.create_task(self.client.send(msg))

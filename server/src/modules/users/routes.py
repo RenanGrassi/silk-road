@@ -1,5 +1,5 @@
 from src.abstracts.abstract_route import AbstractRoute
-from src.modules.products.service import ProductService
+from src.modules.users.service import UserService
 
 
 class ProductRoute(AbstractRoute):
@@ -11,7 +11,7 @@ class ProductRoute(AbstractRoute):
         """
         Initialize the ProductRoute class.
         """
-        self.service = ProductService()
+        self.service = UserService()
 
     @classmethod
     def group(cls) -> str:
@@ -19,11 +19,12 @@ class ProductRoute(AbstractRoute):
         The path of the route.
         :return: The path of the route.
         """
-        return "products"
+        return "users"
 
-    def get(self, config: dict) -> dict:
+    def login(self, config: dict) -> dict:
         """
-        Get all products.
-        :return: A list of all products.
+        Login a user.
+        :param config: The configuration for the login.
+        :return: The result of the login.
         """
-        return self.service.list()
+        return self.service.login(config)

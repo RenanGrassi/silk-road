@@ -6,4 +6,4 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
-CMD ["uvicorn", "src.main", "--reload", "--log-level", "debug"]
+CMD ["python3", "-m", "src.main"]
