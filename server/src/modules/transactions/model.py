@@ -6,7 +6,7 @@ from src.modules.products.model import ProductModel
 
 class TransactionModel(Base):
     __tablename__ = "transaction"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, auto_increment=True)
     buyer_id = Column(ForeignKey("user.id"), nullable=False)
     quantity = Column(Integer, nullable=False)
     product_id = Column(ForeignKey("product.id"), nullable=False)

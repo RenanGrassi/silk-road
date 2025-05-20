@@ -6,7 +6,7 @@ from src.modules.users.model import UserModel
 
 class ShopModel(Base):
     __tablename__ = "shop"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, auto_increment=True)
     name = Column(String(50), nullable=False, unique=True)
 
     user_id = Column(ForeignKey("user.id"), nullable=False)

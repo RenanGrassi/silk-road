@@ -5,7 +5,7 @@ from src.services.database import Base
 
 class UserModel(Base):
     __tablename__ = "user"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, auto_increment=True)
     name = Column(String(50), nullable=False, unique=True)
     email = Column(String(50), nullable=False, unique=True)
     password = Column(String(255), nullable=False)
