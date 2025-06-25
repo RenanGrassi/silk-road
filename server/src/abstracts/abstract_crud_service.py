@@ -24,8 +24,8 @@ class AbstractCRUDService(ABC):
         :param data: The data to create the resource with.
         :return: The created resource.
         """
-        print(data)
         resource = self.model(**data)
+
         session.add(resource)
         session.flush()
         print(resource)

@@ -61,8 +61,6 @@ class RegisterWindow(QWidget):
         self.setLayout(layout)
 
     def register_user(self):
-        from src.windows.login_window import LoginWindow
-
         username = self.username_input.text().strip()
         email = self.email_input.text().strip()
         password = self.password_input.text()
@@ -86,11 +84,14 @@ class RegisterWindow(QWidget):
         register_data = self.user_server.register(
             {"name": username, "email": email, "password": password}
         )
-        print(register_data)
+        if "error" in register_data.keys():
+            self.message_label.setText(register_data["error"])
+            self.message_label.setStyleSheet("color: red;")
+            return
         self.message_label.setText(f"Usuário '{username}' cadastrado com sucesso!")
         self.message_label.setStyleSheet("color: green;")
         self.username_input.clear()
         self.email_input.clear()
         self.password_input.clear()
         self.confirm_input.clear()
-        LoginWindow().show()
+        # TODO - Redirecionar para a tela de login

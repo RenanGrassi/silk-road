@@ -20,16 +20,24 @@ class UserService(AbstractCRUDService):
         :param config: The configuration for the login.
         :return: The result of the login.
         """
+        print("Login attempt with config:", config)
         user = (
             session.query(self.model)
             .filter(self.model.email == config.get("email"))
             .first()
         )
+        print("User found:", user)
         if not user:
-            raise Exception("User not found")
+            return {
+                "error": "User not found",
+                "status": 404,
+            }
         validate = AuthService.check_password(config.get("password"), user.password)
         if not validate:
-            raise Exception("Invalid password")
+            return {
+                "error": "Invalid password",
+                "status": 401,
+            }
         access_token = AuthService.create_access_token(
             data={"email": user.email, "id": user.id}
         )

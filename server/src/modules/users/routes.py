@@ -1,4 +1,3 @@
-from src.abstracts.abstract_route import AbstractRoute
 from src.modules.users.service import UserService
 from src.services.auth import AuthService
 
@@ -6,7 +5,7 @@ import Pyro5.api
 
 
 @Pyro5.api.expose
-class UserRoute(AbstractRoute):
+class UserRoute:
     """
     Route class for managing products.
     """
@@ -16,14 +15,6 @@ class UserRoute(AbstractRoute):
         Initialize the ProductRoute class.
         """
         self.service = UserService()
-
-    @classmethod
-    def group(cls) -> str:
-        """
-        The path of the route.
-        :return: The path of the route.
-        """
-        return "users"
 
     def login(self, config: dict) -> dict:
         """
@@ -41,7 +32,9 @@ class UserRoute(AbstractRoute):
         """
         password = AuthService.hash_password(config["password"])
         config["password"] = password
-        return self.service.create(config)
+        user_created = self.service.create(config)
+        print(user_created)
+        return user_created
 
     @AuthService.authenticate()
     def get(self, config: dict, auth: dict) -> dict:
