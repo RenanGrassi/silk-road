@@ -32,4 +32,6 @@ class ShopServer(BaseServer):
         :param config: The configuration for the shop.
         :return: The created shop.
         """
-        return self.service.create(config.model_dump())
+        return self.service.create(
+            config.model_dump(), **GlobalToken.get_token_kwargs()
+        )

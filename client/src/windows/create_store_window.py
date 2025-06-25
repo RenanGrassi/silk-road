@@ -1,12 +1,21 @@
 # windows/create_store_window.py
-from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
+from PyQt6.QtWidgets import (
+    QWidget,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QVBoxLayout,
+    QMessageBox,
+)
+from src.server.shop import ShopServer, ShopModel
+
 
 class CreateStoreWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Criar Loja")
         self.resize(300, 200)
-
+        self.shop_server = ShopServer()
         layout = QVBoxLayout()
 
         self.name_input = QLineEdit()
@@ -30,8 +39,13 @@ class CreateStoreWindow(QWidget):
         desc = self.description_input.text()
 
         if name:
-            # Aqui no futuro vai a chamada Pyro
-            QMessageBox.information(self, "Sucesso", f"Loja '{name}' criada com sucesso!")
+            shop_created = self.shop_server.create(ShopModel(name=name))
+            if "error" in shop_created.keys():
+                QMessageBox.warning(self, "Erro", shop_created["error"])
+                return
+            QMessageBox.information(
+                self, "Sucesso", f"Loja '{name}' criada com sucesso!"
+            )
             self.close()
         else:
             QMessageBox.warning(self, "Erro", "O nome da loja é obrigatório.")

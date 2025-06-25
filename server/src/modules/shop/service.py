@@ -13,16 +13,15 @@ class ShopService(AbstractCRUDService):
         return ShopModel
 
     @provide_session()
-    def get(self, user_id: str) -> dict:
+    def get(self, user_id: str, session) -> dict:
         """
         Get all products.
         :return: A list of all products.
         """
-        return (
-            self.model.query.filter(self.model.user_id == user_id)
-            .order_by(self.model.created_at.desc())
-            .first()
-        )
+        shop = session.query(self.model).filter(self.model.user_id == user_id).first()
+        if not shop:
+            return None
+        return {c.name: getattr(shop, c.name) for c in shop.__table__.columns}
 
     @provide_session()
     def create(self, config: dict, user_id: str, session) -> dict:
