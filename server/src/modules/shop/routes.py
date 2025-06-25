@@ -1,4 +1,4 @@
-from src.modules.products.service import ProductService
+from src.modules.shop.service import ShopService
 from src.services.auth import AuthService
 import Pyro5.api
 
@@ -13,7 +13,7 @@ class ShopRoute:
         """
         Initialize the ProductRoute class.
         """
-        self.service = ProductService()
+        self.service = ShopService()
 
     @AuthService.authenticate()
     def get(self, config: dict, auth: dict, **kwargs) -> dict:

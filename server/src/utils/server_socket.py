@@ -2,6 +2,7 @@ import Pyro5.api
 from src.modules.products.routes import ProductRoute
 from src.modules.users.routes import UserRoute
 from src.modules.shop.routes import ShopRoute
+from src.modules.transactions.routes import TransactionRoute
 
 
 def register_daemon():
@@ -19,4 +20,9 @@ def register_daemon():
     uri_shop = daemon.register(ShopRoute, "shop")
     ns.register("shop", str(uri_shop).replace("0.0.0.0", "silk-road-server"))
     print(f"ShopRoute URI: {uri_shop}")
+    uri_transactions = daemon.register(TransactionRoute, "transactions")
+    ns.register(
+        "transactions", str(uri_transactions).replace("0.0.0.0", "silk-road-server")
+    )
+    print(f"TransactionRoute URI: {uri_transactions}")
     daemon.requestLoop()
