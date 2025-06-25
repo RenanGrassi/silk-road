@@ -17,3 +17,11 @@ class GlobalToken:
     @classmethod
     def clear_token(cls):
         cls._token = None
+
+    @classmethod
+    def get_token_kwargs(cls):
+        """
+        Returns a dictionary with the token for use in service calls.
+        :return: A dictionary containing the token.
+        """
+        return {"token": cls.get_token()} if cls.get_token() else {}

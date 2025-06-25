@@ -23,7 +23,7 @@ class ProductRoute:
         :param auth: The authentication information.
         :return: The activated product.
         """
-        return self.service.activate_announcement(config, auth["id"])
+        return self.service.activate_announcement(config.get("product_id"), auth["id"])
 
     @AuthService.authenticate()
     def deactivate_announcement(self, config: dict, auth: dict, **kwargs) -> dict:
