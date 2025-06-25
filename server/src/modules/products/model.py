@@ -1,5 +1,5 @@
 from sqlalchemy.orm import relationship
-from sqlalchemy import String, ForeignKey, Double, Column, Integer
+from sqlalchemy import String, ForeignKey, Double, Column, Integer, Boolean
 from src.services.database import Base
 
 
@@ -23,7 +23,7 @@ class ProductModel(Base):
         cascade="all, delete-orphan",
     )
 
-    status = Column(String(10), default="ativo")
+    is_active = Column(Boolean, default=False, nullable=False)
     shop_id = Column(ForeignKey("shop.id"), nullable=False)
     shop = relationship("ShopModel", back_populates="products")
 

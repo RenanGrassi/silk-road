@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
 )
 from PyQt6.QtCore import Qt
-from src.server.user import UserServer
+from src.server.user import UserServer, LoginModel
 from windows.main_window import MainWindow
 from windows.register_window import RegisterWindow
 from Pyro5.errors import NamingError
@@ -57,7 +57,9 @@ class LoginWindow(QWidget):
             self.username_input.setPlaceholderText("Preencha todos os campos")
             self.password_input.setPlaceholderText("Preencha todos os campos")
             return
-        user = self.user_server.login({"email": username, "password": password})
+        user = self.user_server.login(
+            LoginModel(**{"email": username, "password": password})
+        )
         if "error" in user.keys():
             self.message_label.setText(user["error"])
             self.message_label.setStyleSheet("color: red;")
