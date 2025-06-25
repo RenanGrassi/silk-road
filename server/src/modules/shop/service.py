@@ -62,4 +62,7 @@ class ShopService(AbstractCRUDService):
             setattr(current_shop, key, value)
         session.commit()
         session.refresh(current_shop)
-        return current_shop.to_dict()
+        return {
+            c.name: getattr(current_shop, c.name)
+            for c in current_shop.__table__.columns
+        }
