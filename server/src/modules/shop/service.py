@@ -42,7 +42,7 @@ class ShopService(AbstractCRUDService):
         session.add(shop)
         session.commit()
         session.refresh(shop)
-        return shop.to_dict()
+        return {c.name: getattr(shop, c.name) for c in shop.__table__.columns}
 
     @provide_session()
     def update(self, config: dict, user_id: str, session) -> dict:
