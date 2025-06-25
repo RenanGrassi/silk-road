@@ -38,11 +38,11 @@ class ShopService(AbstractCRUDService):
                 "status": 400,
             }
         config["user_id"] = user_id
-        product = self.model(**config)
-        session.add(product)
+        shop = self.model(**config)
+        session.add(shop)
         session.commit()
-        session.refresh(product)
-        return product.to_dict()
+        session.refresh(shop)
+        return shop.to_dict()
 
     @provide_session()
     def update(self, config: dict, user_id: str, session) -> dict:

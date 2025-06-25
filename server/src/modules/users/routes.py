@@ -60,3 +60,13 @@ class UserRoute:
         :return: None
         """
         return self.service.delete(config)
+
+    @AuthService.authenticate()
+    def add_balance(self, config: dict, auth: dict, **kwargs) -> dict:
+        """
+        Add balance to a user.
+        :param config: The configuration for the balance addition.
+        :param auth: The authentication information.
+        :return: The updated user with the new balance.
+        """
+        return self.service.add_balance(config["amount"], auth["id"])

@@ -44,3 +44,22 @@ class UserService(AbstractCRUDService):
         return {
             "access_token": access_token,
         }
+
+    @provide_session()
+    def add_balance(self, user_id: str, amount: float, session) -> dict:
+        """
+        Add balance to a user.
+        :param user_id: The ID of the user.
+        :param amount: The amount to add.
+        :return: The updated user.
+        """
+        user = self.get(user_id)
+        if not user:
+            return {
+                "error": "User not found",
+                "status": 404,
+            }
+        user.balance += amount
+        session.commit()
+        session.refresh(user)
+        return user.to_dict()
