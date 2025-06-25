@@ -33,14 +33,6 @@ services:
       - ./data:/app/data        # Banco SQLite persistente
     networks:
       - silk-road
-  database:
-    container_name: silk-road-db
-    image: nouchka/sqlite3
-    volumes:
-      - ./data:/db
-      - ./database/init-db.sql:/init.sql
-    networks:
-      - silk-road
   
   nameserver:
     build: ./nameserver

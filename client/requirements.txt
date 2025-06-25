@@ -3,3 +3,4 @@ PyQt6
 opencv-python-headless
 numpy<2.0
 Pyro5
+pydantic

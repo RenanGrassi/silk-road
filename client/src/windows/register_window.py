@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
-from src.server.user import UserServer
+from src.server.user import UserServer, RegisterModel
 
 
 class RegisterWindow(QWidget):
@@ -83,7 +83,7 @@ class RegisterWindow(QWidget):
             return
 
         register_data = self.user_server.register(
-            {"name": username, "email": email, "password": password}
+            RegisterModel(**{"name": username, "email": email, "password": password})
         )
         if "error" in register_data.keys():
             self.message_label.setText(register_data["error"])

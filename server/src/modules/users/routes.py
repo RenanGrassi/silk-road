@@ -37,7 +37,7 @@ class UserRoute:
         return user_created
 
     @AuthService.authenticate()
-    def get(self, config: dict, auth: dict) -> dict:
+    def get(self, auth: dict, **kwargs) -> dict:
         """
         Get a user by ID.
         :param config: The configuration for the user.

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import relationship
-from sqlalchemy import String, Column, Integer
+from sqlalchemy import String, Column, Integer, Float
 from src.services.database import Base
 
 
@@ -9,6 +9,7 @@ class UserModel(Base):
     name = Column(String(50), nullable=False, unique=True)
     email = Column(String(50), nullable=False, unique=True)
     password = Column(String(255), nullable=False)
+    balance = Column(Float, default=0.0)
     shop = relationship(
         "ShopModel",
         back_populates="user",

@@ -19,6 +19,7 @@ from src.windows.product_details_window import ProductDetailsWindow
 from src.windows.manage_products_window import ManageProductsWindow
 from src.windows.reports_window import ReportsWindow
 from src.windows.transaction_history_window import TransactionHistoryWindow
+from src.server.user import UserServer
 
 
 class MainWindow(QWidget):
@@ -26,6 +27,7 @@ class MainWindow(QWidget):
         super().__init__()
         self.setWindowTitle("Rota da Seda - Marketplace Distribuído")
         self.resize(1000, 600)
+        self.user_server = UserServer()
 
         main_layout = QHBoxLayout(self)
 
@@ -65,9 +67,11 @@ class MainWindow(QWidget):
         logo_label.setAlignment(
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         )
-
+        user = self.user_server.get()
         # Informações de usuário
-        user_info = QLabel("Usuário: renan | Saldo: ฿80.00")
+        user_info = QLabel(
+            f"Usuário: {user.get('name')} | Saldo: ฿{user.get('balance', 0):.2f}"
+        )
         user_info.setStyleSheet("color: green; font-weight: bold;")
         user_info.setAlignment(
             Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
