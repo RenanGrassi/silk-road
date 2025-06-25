@@ -13,7 +13,6 @@ class RegisterWindow(QWidget):
 
         layout = QVBoxLayout()
 
-        # 🖼️ Logo
         logo_label = QLabel()
         logo_pixmap = QPixmap("resources/logo.png")
         logo_label.setPixmap(
@@ -61,6 +60,8 @@ class RegisterWindow(QWidget):
         self.setLayout(layout)
 
     def register_user(self):
+        from windows.login_window import LoginWindow
+
         username = self.username_input.text().strip()
         email = self.email_input.text().strip()
         password = self.password_input.text()
@@ -95,3 +96,10 @@ class RegisterWindow(QWidget):
         self.password_input.clear()
         self.confirm_input.clear()
         # TODO - Redirecionar para a tela de login
+        self.message_label.setText(f"Usuário '{username}' cadastrado com sucesso!")
+        self.message_label.setStyleSheet("color: green;")
+
+        # Redireciona para tela de login
+        self.login_window = LoginWindow()
+        self.login_window.show()
+        self.close()
