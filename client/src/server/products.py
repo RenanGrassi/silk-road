@@ -48,3 +48,36 @@ class ProductServer(BaseServer):
         return self.service.deactivate_announcement(
             config.product_id, **GlobalToken.get_token_kwargs()
         )
+
+    def get(self, config: ProductIdModel) -> dict:
+        """Get a product by its ID.
+        :param config: The configuration containing the product ID.
+        :return: The product with the specified ID.
+        """
+        return self.service.get(config.product_id)
+
+    def update(self, config: ProductModel) -> dict:
+        """
+        Update an existing product.
+        :param config: The product configuration to update.
+        :return: The updated product.
+        """
+        return self.service.update(
+            config.model_dump(), **GlobalToken.get_token_kwargs()
+        )
+
+    def delete(self, config: ProductIdModel) -> dict:
+        """
+        Delete a product.
+        :param config: The product ID to delete.
+        :return: The deleted product.
+        """
+        return self.service.delete(config.product_id, **GlobalToken.get_token_kwargs())
+
+    def get_by_shop(self) -> dict:
+        """
+        Get products by shop ID.
+        :param user_id: The ID of the user whose shop's products are to be retrieved.
+        :return: A list of products for the specified shop.
+        """
+        return self.service.get_by_shop(**GlobalToken.get_token_kwargs())

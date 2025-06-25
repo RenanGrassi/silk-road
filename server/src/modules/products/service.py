@@ -87,9 +87,81 @@ class ProductService(AbstractCRUDService):
         :return: A list of all products.
         """
         if config.get("like"):
-            return (
+            products = (
                 session.query(self.model)
                 .filter(self.model.name.ilike(f"%{config['like']}%"))
                 .all()
             )
-        return session.query(self.model).all()
+            return [product.to_dict() for product in products]
+        products = session.query(self.model).all()
+        return [product.to_dict() for product in products]
+
+    @provide_session()
+    def get(self, product_id: str, session) -> dict:
+        """
+        Get a product by its ID.
+        :param product_id: The ID of the product to retrieve.
+        :return: The product if found, otherwise an error message.
+        """
+        product = session.query(self.model).filter(self.model.id == product_id).first()
+        if not product:
+            return {"error": "Product not found", "status": 404}
+        return product.to_dict()
+
+    @provide_session()
+    def get_by_shop(self, user_id: str, session) -> dict:
+        """
+        Get all products for a specific shop.
+        :param shop_id: The ID of the shop to retrieve products for.
+        :return: A list of products for the specified shop.
+        """
+        products = (
+            session.query(self.model).filter(self.model.shop.has(user_id=user_id)).all()
+        )
+        return [product.to_dict() for product in products]
+
+    @provide_session()
+    def update(self, config: dict, user_id: str, session) -> dict:
+        """
+        Update an existing product.
+        :param config: The configuration for the product.
+        :param user_id: The ID of the user updating the product.
+        :return: The updated product.
+        """
+        product = (
+            session.query(self.model)
+            .filter(self.model.id == config["id"], self.model.shop.has(user_id=user_id))
+            .first()
+        )
+        if not product:
+            return {
+                "error": "Product not found or you do not have permission to update it",
+                "status": 404,
+            }
+        for key, value in config.items():
+            setattr(product, key, value)
+        session.commit()
+        session.refresh(product)
+        return product.to_dict()
+
+    @provide_session()
+    def delete(self, config: dict, user_id: str, session) -> dict:
+        """
+        Delete a product.
+        :param config: The configuration for the product.
+        :param user_id: The ID of the user deleting the product.
+        :return: The deleted product.
+        """
+        product = (
+            session.query(self.model)
+            .filter(self.model.id == config["id"], self.model.shop.has(user_id=user_id))
+            .first()
+        )
+        if not product:
+            return {
+                "error": "Product not found or you do not have permission to delete it",
+                "status": 404,
+            }
+        session.delete(product)
+        session.commit()
+        return {"message": "Product deleted successfully"}

@@ -41,10 +41,47 @@ class ProductRoute:
         """
         return self.service.list(config)
 
-    def create(self, config: dict) -> dict:
+    @AuthService.authenticate()
+    def create(self, config: dict, auth: dict) -> dict:
         """
         Create a new product.
         :param config: The configuration for the product.
         :return: The created product.
         """
-        return self.service.create(config)
+        return self.service.create(config, auth["id"])
+
+    @AuthService.authenticate()
+    def update(self, config: dict, auth: dict) -> dict:
+        """
+        Update an existing product.
+        :param config: The configuration for the product.
+        :return: The updated product.
+        """
+        return self.service.update(config, auth["id"])
+
+    @AuthService.authenticate()
+    def delete(self, config: dict, auth: dict) -> dict:
+        """
+        Delete a product.
+        :param config: The configuration for the product.
+        :return: The deleted product.
+        """
+        return self.service.delete(config, auth["id"])
+
+    def get(self, config: dict) -> dict:
+        """
+        Get a product by its ID.
+        :param config: The configuration containing the product ID.
+        :return: The product with the specified ID.
+        """
+        return self.service.get(config.get("product_id"))
+
+    @AuthService.authenticate()
+    def get_by_shop(self, auth: dict) -> dict:
+        """
+        Get all products for a specific shop.
+        :param config: The configuration containing the shop ID.
+        :param auth: The authentication information.
+        :return: A list of products for the specified shop.
+        """
+        return self.service.get_by_shop(auth["id"])
