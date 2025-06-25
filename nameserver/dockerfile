@@ -1,0 +1,3 @@
+FROM python:3.13-alpine
+RUN pip install --no-cache-dir Pyro5
+CMD ["python", "-m", "Pyro5.nameserver", "-n", "0.0.0.0"]

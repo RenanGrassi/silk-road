@@ -2,8 +2,11 @@ from src.abstracts.abstract_route import AbstractRoute
 from src.modules.users.service import UserService
 from src.services.auth import AuthService
 
+import Pyro5.api
 
-class ProductRoute(AbstractRoute):
+
+@Pyro5.api.expose
+class UserRoute(AbstractRoute):
     """
     Route class for managing products.
     """

@@ -1,8 +1,11 @@
-from src.abstracts.abstract_route import AbstractRoute
 from src.modules.products.service import ProductService
+from src.services.auth import AuthService
+
+import Pyro5.api
 
 
-class ProductRoute(AbstractRoute):
+@Pyro5.api.expose
+class ProductRoute:
     """
     Route class for managing products.
     """
@@ -12,14 +15,6 @@ class ProductRoute(AbstractRoute):
         Initialize the ProductRoute class.
         """
         self.service = ProductService()
-
-    @classmethod
-    def group(cls) -> str:
-        """
-        The path of the route.
-        :return: The path of the route.
-        """
-        return "products"
 
     def get(self, config: dict) -> dict:
         """

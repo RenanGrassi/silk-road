@@ -239,5 +239,42 @@ def find_route(self, dto: BaseDTO):
     return method(dto.conf)
 ```
 ### Login e autenticação
+```json
+{
+    "group": "users",
+    "method": "login",
+    "conf": {
+        "email": "murillo@gmail.com",
+        "password": "123456"
+    }
+}
+```
+```json
+{
+        "group": "users",
+        "method": "get",
+        "conf": {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11cmlsbG9AZ21haWwuY29tIiwiaWQiOjEsImV4cCI6MTc0ODcxMTUxMn0.mcAECHhSIWUstdwz3VD2FGHHCoT6UEPGkd0dzR8_Rsc"
+        }
+}
+```
+```json
+{
+        "group": "users",
+        "method": "create",
+        "conf": {
+            "email": "teste2@gmail.com",
+            "password": "123456",
+            "name": "MurilloMurillo2"
+        }
+}
+```
 ### Produtos
+```json
+{
+        "group": "products",
+        "method": "list",
+        "conf": {}
+}
+```
 ### Usuários

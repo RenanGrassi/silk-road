@@ -40,3 +40,12 @@ services:
       - ./database/init-db.sql:/init.sql
     networks:
       - silk-road
+  
+  nameserver:
+    build: ./nameserver
+    container_name: silk-road-nameserver
+    command: python -m Pyro5.nameserver -n 0.0.0.0
+    ports:
+      - "9090:9090"
+    networks:
+      - silk-road

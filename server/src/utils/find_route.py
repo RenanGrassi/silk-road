@@ -54,7 +54,6 @@ class RouteRequests:
         """
         # Get the request method and path
         groups = [cls.group() for cls in self.routes]
-        print(f"Grupos: {groups}")
         class_group = next(
             (cls for cls in self.routes if cls.group() == dto.group), None
         )

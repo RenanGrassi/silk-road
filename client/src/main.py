@@ -1,11 +1,16 @@
-# src/main.py
-from PySide6.QtWidgets import QApplication
-from src.gui.main import ClientGUI
 import sys
-import os
+from PyQt6.QtWidgets import QApplication
+from src.windows.login_window import LoginWindow
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    gui = ClientGUI()
-    gui.show()
-    sys.exit(app.exec())
+app = QApplication(sys.argv)
+
+
+def show_login():
+    global login_window
+    login_window = LoginWindow()
+    login_window.show()
+
+
+show_login()
+
+sys.exit(app.exec())

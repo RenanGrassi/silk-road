@@ -1,5 +1,5 @@
 import asyncio
-from src.utils.server_socket import SocketServer
+from src.utils.server_socket import register_daemon
 from src.modules.users.model import UserModel
 from src.modules.shop.model import ShopModel
 from src.modules.products.model import ProductModel
@@ -32,8 +32,7 @@ def create_user(session):
 
 async def main():
     create_user()
-    server = SocketServer()
-    await server.start()
+    register_daemon()
 
 
 async def start():
