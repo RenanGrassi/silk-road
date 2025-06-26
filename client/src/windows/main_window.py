@@ -21,7 +21,7 @@ from src.windows.reports_window import ReportsWindow
 from src.windows.transaction_history_window import TransactionHistoryWindow
 from src.server.user import UserServer
 from src.windows.register_products import RegisterProductWindow
-
+from src.server.products import ProductServer
 
 
 class MainWindow(QWidget):
@@ -30,6 +30,7 @@ class MainWindow(QWidget):
         self.setWindowTitle("Rota da Seda - Marketplace Distribuído")
         self.resize(1000, 600)
         self.user_server = UserServer()
+        self.products_server = ProductServer()
 
         main_layout = QHBoxLayout(self)
 
@@ -112,19 +113,18 @@ class MainWindow(QWidget):
 
         product_grid = QGridLayout()
         product_grid.setSpacing(15)
-
+        products = self.products_server.list()
         self.product_cards = []
 
-        for i in range(6):
-            nome_produto = f"Produto {i+1}"
+        for idx, product in enumerate(products):
             card = self.create_product_card(
-                title=nome_produto,
-                price=f"฿{2.00 + i:.2f}",
-                description="Exemplo de descrição do produto.",
+                title=product.get("name", "Produto Desconhecido"),
+                price=f"฿{product.get("price"):.2f}",
+                description=product.get("description"),
             )
-            self.product_cards.append((card, nome_produto.lower()))
-            row = i // 3
-            col = i % 3
+            self.product_cards.append((card, product.get("name").lower()))
+            row = idx // 3
+            col = idx % 3
             product_grid.addWidget(card, row, col)
 
         wrapper = QWidget()
@@ -184,7 +184,6 @@ class MainWindow(QWidget):
             loja_id = 1  # valor fixo ou capturado dinamicamente se quiser
             self.register_product_window = RegisterProductWindow(loja_id)
             self.register_product_window.show()
-
 
     def create_product_card(self, title, price, description):
         box = QGroupBox(title)
