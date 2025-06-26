@@ -11,12 +11,6 @@ class ProductModel(Base):
     description = Column(String(255), nullable=True)
     price = Column(Double, nullable=False)
 
-    images = relationship(
-        "ImageModel",
-        back_populates="product",
-        cascade="all, delete-orphan",
-    )
-
     sales = relationship(
         "TransactionModel",
         back_populates="product",
@@ -32,12 +26,3 @@ class ProductModel(Base):
         back_populates="product",
         foreign_keys="[TransactionModel.product_id]",
     )
-
-
-class ImageModel(Base):
-    __tablename__ = "image"
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50), nullable=False)
-    url = Column(String(255), nullable=False)
-    product_id = Column(ForeignKey("product.id"), nullable=False)
-    product = relationship(ProductModel, back_populates="images")
