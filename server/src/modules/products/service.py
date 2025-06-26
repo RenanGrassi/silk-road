@@ -32,7 +32,7 @@ class ProductService(AbstractCRUDService):
         session.add(product)
         session.commit()
         session.refresh(product)
-        return product.to_dict()
+        return {c.name: getattr(product, c.name) for c in product.__table__.columns}
 
     @provide_session()
     def activate_announcement(self, product_id: str, user_id: str, session) -> dict:
@@ -55,7 +55,7 @@ class ProductService(AbstractCRUDService):
         product.is_active = True
         session.commit()
         session.refresh(product)
-        return product.to_dict()
+        return {c.name: getattr(product, c.name) for c in product.__table__.columns}
 
     @provide_session()
     def deactivate_announcement(self, product_id: str, user_id: str, session) -> dict:
@@ -78,7 +78,7 @@ class ProductService(AbstractCRUDService):
         product.is_active = False
         session.commit()
         session.refresh(product)
-        return product.to_dict()
+        return {c.name: getattr(product, c.name) for c in product.__table__.columns}
 
     @provide_session()
     def list(self, config, session) -> dict:
@@ -92,9 +92,15 @@ class ProductService(AbstractCRUDService):
                 .filter(self.model.name.ilike(f"%{config['like']}%"))
                 .all()
             )
-            return [product.to_dict() for product in products]
+            return [
+                {c.name: getattr(product, c.name) for c in product.__table__.columns}
+                for product in products
+            ]
         products = session.query(self.model).all()
-        return [product.to_dict() for product in products]
+        return [
+            {c.name: getattr(product, c.name) for c in product.__table__.columns}
+            for product in products
+        ]
 
     @provide_session()
     def get(self, product_id: str, session) -> dict:
@@ -106,7 +112,7 @@ class ProductService(AbstractCRUDService):
         product = session.query(self.model).filter(self.model.id == product_id).first()
         if not product:
             return {"error": "Product not found", "status": 404}
-        return product.to_dict()
+        return {c.name: getattr(product, c.name) for c in product.__table__.columns}
 
     @provide_session()
     def get_by_shop(self, user_id: str, session) -> dict:
@@ -118,7 +124,10 @@ class ProductService(AbstractCRUDService):
         products = (
             session.query(self.model).filter(self.model.shop.has(user_id=user_id)).all()
         )
-        return [product.to_dict() for product in products]
+        return [
+            {c.name: getattr(product, c.name) for c in product.__table__.columns}
+            for product in products
+        ]
 
     @provide_session()
     def update(self, config: dict, user_id: str, session) -> dict:
@@ -142,7 +151,7 @@ class ProductService(AbstractCRUDService):
             setattr(product, key, value)
         session.commit()
         session.refresh(product)
-        return product.to_dict()
+        return {c.name: getattr(product, c.name) for c in product.__table__.columns}
 
     @provide_session()
     def delete(self, config: dict, user_id: str, session) -> dict:
