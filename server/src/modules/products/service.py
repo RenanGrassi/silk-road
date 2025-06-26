@@ -27,7 +27,7 @@ class ProductService(AbstractCRUDService):
                 "error": "Shop not found",
                 "status": 404,
             }
-        config["shop_id"] = shop.id
+        config["shop_id"] = shop.get("id")
         product = self.model(**config)
         session.add(product)
         session.commit()
