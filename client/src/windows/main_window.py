@@ -20,6 +20,8 @@ from src.windows.manage_products_window import ManageProductsWindow
 from src.windows.reports_window import ReportsWindow
 from src.windows.transaction_history_window import TransactionHistoryWindow
 from src.server.user import UserServer
+from src.windows.register_products import RegisterProductWindow
+
 
 
 class MainWindow(QWidget):
@@ -54,7 +56,7 @@ class MainWindow(QWidget):
 
         # Logo à esquerda
         logo_label = QLabel()
-        logo_pixmap = QPixmap("resources/logo.png")
+        logo_pixmap = QPixmap("src/resources/logo.png")
         logo_label.setPixmap(
             logo_pixmap.scaled(
                 216,
@@ -178,6 +180,11 @@ class MainWindow(QWidget):
         elif text == "Histórico de Transações":
             self.history_window = TransactionHistoryWindow()
             self.history_window.show()
+        elif text == "Cadastrar Produtos":
+            loja_id = 1  # valor fixo ou capturado dinamicamente se quiser
+            self.register_product_window = RegisterProductWindow(loja_id)
+            self.register_product_window.show()
+
 
     def create_product_card(self, title, price, description):
         box = QGroupBox(title)
