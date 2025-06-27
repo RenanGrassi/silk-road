@@ -91,7 +91,7 @@ class ProductService(AbstractCRUDService):
             products = (
                 session.query(self.model)
                 .filter(self.model.name.ilike(f"%{like}%"))
-                .filter(self.model.is_active is True)
+                .filter(self.model.is_active)
                 .options(joinedload(self.model.shop))
                 .all()
             )
@@ -102,7 +102,7 @@ class ProductService(AbstractCRUDService):
         products = (
             session.query(self.model)
             .options(joinedload(self.model.shop))
-            .filter(self.model.is_active is True)
+            .filter(self.model.is_active)
             .all()
         )
         print(

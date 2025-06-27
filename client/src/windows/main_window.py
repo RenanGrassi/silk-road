@@ -148,14 +148,18 @@ class MainWindow(QWidget):
             Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
         )
 
-        # Sair
         logout_button = QPushButton("Sair")
         logout_button.setStyleSheet("background-color: #ffcccc; font-weight: bold;")
         logout_button.clicked.connect(self.logout)
 
+        refresh_button = QPushButton("Atualizar Produtos")
+        refresh_button.setStyleSheet("background-color: #ccffcc; font-weight: bold;")
+        refresh_button.clicked.connect(self.refresh_products)
+
         right_header = QHBoxLayout()
         right_header.addWidget(self.user_info)
         right_header.addWidget(logout_button)
+        right_header.addWidget(refresh_button)
 
         right_widget = QWidget()
         right_widget.setLayout(right_header)
@@ -237,3 +241,19 @@ class MainWindow(QWidget):
         self.login_window = LoginWindow()
         self.login_window.show()
         self.close()
+
+    def refresh_products(self):
+        for card, _ in self.product_cards:
+            card.setParent(None)
+        self.product_cards.clear()
+
+        products = self.products_server.list()
+        product_grid = self.product_area.widget().layout()
+        product_grid.setSpacing(15)
+
+        for idx, product in enumerate(products):
+            card = self.create_product_card(product)
+            self.product_cards.append((card, product.get("name", "").lower()))
+            row = idx // 3
+            col = idx % 3
+            product_grid.addWidget(card, row, col)
