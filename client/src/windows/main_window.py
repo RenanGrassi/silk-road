@@ -46,12 +46,9 @@ class MainWindow(QWidget):
         self.category_list = QListWidget()
         self.category_list.addItems(
             [
-                "Autenticação",
                 "Criar Loja",
                 "Cadastrar Produtos",
                 "Gerenciar Produtos",
-                "Relatórios",
-                "Histórico de Transações",
                 "Adicionar Saldo",
             ]
         )

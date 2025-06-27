@@ -82,27 +82,16 @@ class ProductService(AbstractCRUDService):
         return {c.name: getattr(product, c.name) for c in product.__table__.columns}
 
     @provide_session()
-    def list(self, like: str, session) -> dict:
+    def list(self, user_id: str, session) -> dict:
         """
         Get all products.
         :return: A list of all products.
         """
-        if like:
-            products = (
-                session.query(self.model)
-                .filter(self.model.name.ilike(f"%{like}%"))
-                .filter(self.model.is_active)
-                .options(joinedload(self.model.shop))
-                .all()
-            )
-            return [
-                {c.name: getattr(product, c.name) for c in product.__table__.columns}
-                for product in products
-            ]
         products = (
             session.query(self.model)
             .options(joinedload(self.model.shop))
             .filter(self.model.is_active)
+            .filter(~self.model.shop.has(user_id=user_id))
             .all()
         )
         print(

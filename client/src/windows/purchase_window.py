@@ -19,7 +19,9 @@ class PurchaseWindow(QWidget):
         layout.addWidget(QLabel(f"<b>Produto:</b> {product['name']}"))
         layout.addWidget(QLabel(f"<b>Preço:</b> ฿{product['price']:.2f}"))
         layout.addWidget(
-            QLabel(f"<b>Loja:</b> {product.get('seller', 'Desconhecida')}")
+            QLabel(
+                f"<b>Loja:</b> {product.get('shop', {}).get('name', 'Desconhecida')}"
+            )
         )
 
         confirm_button = QPushButton("Confirmar Compra")

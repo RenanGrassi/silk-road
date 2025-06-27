@@ -16,8 +16,8 @@ class ProductServer(BaseServer):
         """
         return "products"  # This should match the name used in the Pyro5 daemon registration.
 
-    def list(self, like: str | None = None) -> dict:
-        return self.service.list(like=like)
+    def list(self) -> dict:
+        return self.service.list(**GlobalToken.get_token_kwargs())
 
     def create(self, config: ProductModel) -> dict:
         """

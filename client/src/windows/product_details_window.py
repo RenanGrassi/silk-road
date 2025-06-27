@@ -25,7 +25,7 @@ class ProductDetailsWindow(QWidget):
         price_label = QLabel(f"<b>Preço:</b> {product['price']}")
         desc_label = QLabel(f"<b>Descrição:</b> {product['description']}")
         seller_label = QLabel(
-            f"<b>Vendedor:</b> {product.get('seller', 'Loja Genérica')}"
+            f"<b>Vendedor:</b> {product.get('shop',{}).get("name",'Loja Genérica')}"
         )
 
         # Botão comprar

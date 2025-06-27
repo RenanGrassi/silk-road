@@ -34,12 +34,13 @@ class ProductRoute:
         """
         return self.service.deactivate_announcement(product_id, auth["id"])
 
-    def list(self, like: str) -> dict:
+    @AuthService.authenticate()
+    def list(self, auth, **kwargs) -> dict:
         """
         Get all products.
         :return: A list of all products.
         """
-        return self.service.list(like)
+        return self.service.list(auth["id"])
 
     @AuthService.authenticate()
     def create(self, config: dict, auth: dict, **kwargs) -> dict:
