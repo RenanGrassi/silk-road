@@ -16,23 +16,23 @@ class ProductRoute:
         self.service = ProductService()
 
     @AuthService.authenticate()
-    def activate_announcement(self, config: dict, auth: dict, **kwargs) -> dict:
+    def activate_announcement(self, product_id: int, auth: dict, **kwargs) -> dict:
         """
         Activate a product announcement.
         :param config: The configuration for the product.
         :param auth: The authentication information.
         :return: The activated product.
         """
-        return self.service.activate_announcement(config.get("product_id"), auth["id"])
+        return self.service.activate_announcement(product_id, auth["id"])
 
     @AuthService.authenticate()
-    def deactivate_announcement(self, config: dict, auth: dict, **kwargs) -> dict:
+    def deactivate_announcement(self, product_id: int, auth: dict, **kwargs) -> dict:
         """Deactivate a product announcement.
         :param config: The configuration for the product.
         :param auth: The authentication information.
         :return: The deactivated product.
         """
-        return self.service.deactivate_announcement(config, auth["id"])
+        return self.service.deactivate_announcement(product_id, auth["id"])
 
     def list(self, like: str) -> dict:
         """
@@ -60,13 +60,13 @@ class ProductRoute:
         return self.service.update(config, auth["id"])
 
     @AuthService.authenticate()
-    def delete(self, config: dict, auth: dict, **kwargs) -> dict:
+    def delete(self, product_id: int, auth: dict, **kwargs) -> dict:
         """
         Delete a product.
         :param config: The configuration for the product.
         :return: The deleted product.
         """
-        return self.service.delete(config, auth["id"])
+        return self.service.delete(product_id, auth["id"])
 
     def get(self, config: dict) -> dict:
         """

@@ -188,7 +188,7 @@ class ProductService(AbstractCRUDService):
         return {c.name: getattr(product, c.name) for c in product.__table__.columns}
 
     @provide_session()
-    def delete(self, config: dict, user_id: str, session) -> dict:
+    def delete(self, product_id: int, user_id: str, session) -> dict:
         """
         Delete a product.
         :param config: The configuration for the product.
@@ -197,7 +197,7 @@ class ProductService(AbstractCRUDService):
         """
         product = (
             session.query(self.model)
-            .filter(self.model.id == config["id"], self.model.shop.has(user_id=user_id))
+            .filter(self.model.id == product_id, self.model.shop.has(user_id=user_id))
             .first()
         )
         if not product:
