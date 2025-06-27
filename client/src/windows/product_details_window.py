@@ -1,18 +1,22 @@
 from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QMessageBox
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
+from src.server.shop import ShopServer
+
 
 class ProductDetailsWindow(QWidget):
     def __init__(self, product):
         super().__init__()
         self.setWindowTitle(product["title"])
         self.resize(400, 500)
-
+        self.shop_server = ShopServer()
         layout = QVBoxLayout()
 
         # Imagem do produto (placeholder)
         image = QLabel()
-        pixmap = QPixmap("resources/default_product.jpg")  # Substitua com o caminho da imagem real
+        pixmap = QPixmap(
+            "resources/default_product.jpg"
+        )  # Substitua com o caminho da imagem real
         image.setPixmap(pixmap.scaled(300, 200, Qt.AspectRatioMode.KeepAspectRatio))
         image.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -20,7 +24,9 @@ class ProductDetailsWindow(QWidget):
         name_label = QLabel(f"<h2>{product['title']}</h2>")
         price_label = QLabel(f"<b>Preço:</b> {product['price']}")
         desc_label = QLabel(f"<b>Descrição:</b> {product['description']}")
-        seller_label = QLabel(f"<b>Vendedor:</b> {product.get('seller', 'Loja Genérica')}")
+        seller_label = QLabel(
+            f"<b>Vendedor:</b> {product.get('seller', 'Loja Genérica')}"
+        )
 
         # Botão comprar
         buy_button = QPushButton("Comprar")

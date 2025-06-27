@@ -2,6 +2,7 @@ from src.abstracts.abstract_crud_service import AbstractCRUDService
 from src.modules.products.model import ProductModel
 from src.services.database import provide_session
 from src.modules.shop.service import ShopService
+from sqlalchemy.orm import joinedload
 
 
 class ProductService(AbstractCRUDService):
@@ -90,15 +91,48 @@ class ProductService(AbstractCRUDService):
             products = (
                 session.query(self.model)
                 .filter(self.model.name.ilike(f"%{like}%"))
+                .filter(self.model.is_active is True)
+                .options(joinedload(self.model.shop))
                 .all()
             )
             return [
                 {c.name: getattr(product, c.name) for c in product.__table__.columns}
                 for product in products
             ]
-        products = session.query(self.model).all()
+        products = (
+            session.query(self.model)
+            .options(joinedload(self.model.shop))
+            .filter(self.model.is_active is True)
+            .all()
+        )
+        print(
+            [
+                {c.name: getattr(product, c.name) for c in product.__table__.columns}
+                | {
+                    "shop": (
+                        {
+                            c.name: getattr(product.shop, c.name)
+                            for c in product.shop.__table__.columns
+                        }
+                        if product.shop
+                        else None
+                    )
+                }
+                for product in products
+            ]
+        )
         return [
             {c.name: getattr(product, c.name) for c in product.__table__.columns}
+            | {
+                "shop": (
+                    {
+                        c.name: getattr(product.shop, c.name)
+                        for c in product.shop.__table__.columns
+                    }
+                    if product.shop
+                    else None
+                )
+            }
             for product in products
         ]
 

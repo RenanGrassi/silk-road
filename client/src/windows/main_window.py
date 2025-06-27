@@ -121,6 +121,7 @@ class MainWindow(QWidget):
                 title=product.get("name", "Produto Desconhecido"),
                 price=f"฿{product.get("price"):.2f}",
                 description=product.get("description"),
+                shop=product.get("shop", {}).get("name", "Loja Desconhecida"),
             )
             self.product_cards.append((card, product.get("name").lower()))
             row = idx // 3
@@ -185,7 +186,7 @@ class MainWindow(QWidget):
             self.register_product_window = RegisterProductWindow(loja_id)
             self.register_product_window.show()
 
-    def create_product_card(self, title, price, description):
+    def create_product_card(self, title, price, description, shop):
         box = QGroupBox(title)
         layout = QVBoxLayout()
         layout.addWidget(QLabel(description))
@@ -195,7 +196,7 @@ class MainWindow(QWidget):
             "title": title,
             "price": price,
             "description": description,
-            "seller": "Loja XPTO",
+            "seller": shop,
         }
 
         button = QPushButton("Ver detalhes")
