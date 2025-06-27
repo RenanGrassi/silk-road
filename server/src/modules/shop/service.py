@@ -13,6 +13,18 @@ class ShopService(AbstractCRUDService):
         return ShopModel
 
     @provide_session()
+    def get_by_id(self, shop_id: str, session) -> dict:
+        """
+        Get a shop by its ID.
+        :param shop_id: The ID of the shop to retrieve.
+        :return: The shop with the given ID.
+        """
+        shop = session.query(self.model).filter(self.model.id == shop_id).first()
+        if not shop:
+            return None
+        return {c.name: getattr(shop, c.name) for c in shop.__table__.columns}
+
+    @provide_session()
     def get(self, user_id: str, session) -> dict:
         """
         Get all products.

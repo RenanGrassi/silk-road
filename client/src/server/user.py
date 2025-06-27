@@ -1,5 +1,5 @@
 from src.server.base_server import BaseServer
-from src.server.models.user import LoginModel, RegisterModel
+from src.server.models.user import LoginModel, RegisterModel, BalanceModel
 from src.singletons.token import GlobalToken
 
 
@@ -41,3 +41,13 @@ class UserServer(BaseServer):
         :return: The user with the given ID.
         """
         return self.service.get(**{"token": GlobalToken.get_token()})
+
+    def add_balance(self, config: BalanceModel) -> dict:
+        """
+        Add balance to a user.
+        :param config: The configuration for the balance addition.
+        :return: The updated user with the new balance.
+        """
+        return self.service.add_balance(
+            config.model_dump(), **GlobalToken.get_token_kwargs()
+        )

@@ -47,7 +47,7 @@ class TransactionService(AbstractCRUDService):
                 "error": "Insufficient balance",
                 "status": 400,
             }
-        shop = self.shop_service.get(product.get("shop_id"))
+        shop = self.shop_service.get_by_id(product.get("shop_id"))
         if not shop:
             return {
                 "error": "Shop not found",
@@ -63,10 +63,10 @@ class TransactionService(AbstractCRUDService):
         session.commit()
         session.refresh(transaction)
         user["balance"] -= product.get("price")
-        session.commit()
-        self.user_service.update(user_id, user, session)
-        buyer = self.user_service.get(shop.get("user_id"), session)
+        self.user_service.update(user_id, user)
+        buyer = self.user_service.get(shop.get("user_id"))
         buyer["balance"] += product.get("price")
-        session.commit()
-        self.user_service.update(shop.get("user_id"), buyer, session)
-        return transaction.to_dict()
+        self.user_service.update(shop.get("user_id"), buyer)
+        return {
+            c.name: getattr(transaction, c.name) for c in transaction.__table__.columns
+        }

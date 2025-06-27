@@ -16,11 +16,11 @@ class TransactionRoute:
         self.service = TransactionService()
 
     @AuthService.authenticate()
-    def buy(self, config: dict, auth: dict, **kwargs) -> dict:
+    def buy(self, product_id: int, auth: dict, **kwargs) -> dict:
         """
         Buy a product.
         :param config: The configuration for the product.
         :param auth: The authentication information.
         :return: The transaction details.
         """
-        return self.service.buy(config.get("product_id"), auth["id"])
+        return self.service.buy(product_id, auth["id"])

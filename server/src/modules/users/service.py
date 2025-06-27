@@ -46,14 +46,29 @@ class UserService(AbstractCRUDService):
         }
 
     @provide_session()
-    def add_balance(self, user_id: str, amount: float, session) -> dict:
+    def get(self, user_id: str, session) -> dict:
+        """
+        Get a user by their ID.
+        :param user_id: The ID of the user.
+        :return: The user with the specified ID.
+        """
+        user = session.query(self.model).filter(self.model.id == user_id).first()
+        if not user:
+            return {
+                "error": "User not found",
+                "status": 404,
+            }
+        return {c.name: getattr(user, c.name) for c in user.__table__.columns}
+
+    @provide_session()
+    def add_balance(self, amount: float, user_id: str, session) -> dict:
         """
         Add balance to a user.
         :param user_id: The ID of the user.
         :param amount: The amount to add.
         :return: The updated user.
         """
-        user = self.get(user_id)
+        user = session.query(self.model).filter(self.model.id == user_id).first()
         if not user:
             return {
                 "error": "User not found",
@@ -62,4 +77,4 @@ class UserService(AbstractCRUDService):
         user.balance += amount
         session.commit()
         session.refresh(user)
-        return user.to_dict()
+        return {c.name: getattr(user, c.name) for c in user.__table__.columns}

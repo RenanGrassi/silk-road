@@ -22,6 +22,7 @@ from src.windows.reports_window import ReportsWindow
 from src.windows.transaction_history_window import TransactionHistoryWindow
 from src.windows.register_products import RegisterProductWindow
 from src.windows.purchase_window import PurchaseWindow
+from src.windows.add_balance import AddBalanceWindow
 
 from src.server.user import UserServer
 from src.server.products import ProductServer
@@ -51,6 +52,7 @@ class MainWindow(QWidget):
                 "Gerenciar Produtos",
                 "Relatórios",
                 "Histórico de Transações",
+                "Adicionar Saldo",
             ]
         )
         self.category_list.setMaximumWidth(200)
@@ -192,6 +194,10 @@ class MainWindow(QWidget):
             self.register_product_window = RegisterProductWindow(loja_id)
             self.register_product_window.show()
 
+        elif text == "Adicionar Saldo":
+            self.add_balance_window = AddBalanceWindow()
+            self.add_balance_window.show()
+
     def create_product_card(self, product: dict):
         box = QGroupBox(product.get("name", "Produto"))
         layout = QVBoxLayout()
@@ -221,7 +227,7 @@ class MainWindow(QWidget):
 
     def open_purchase_window(self, product):
         self.purchase_window = PurchaseWindow(product)
-        self.purchase_window.finished.connect(self.atualizar_saldo)
+        self.purchase_window.destroyed.connect(self.atualizar_saldo)
         self.purchase_window.show()
 
     def atualizar_saldo(self):
@@ -257,3 +263,5 @@ class MainWindow(QWidget):
             row = idx // 3
             col = idx % 3
             product_grid.addWidget(card, row, col)
+
+        self.atualizar_saldo()

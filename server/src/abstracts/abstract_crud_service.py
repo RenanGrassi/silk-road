@@ -54,7 +54,8 @@ class AbstractCRUDService(ABC):
         resource = session.query(self.model).filter_by(id=resource_id).first()
         for key, value in data.items():
             setattr(resource, key, value)
-        return resource
+        session.flush()
+        return {c.name: getattr(resource, c.name) for c in resource.__table__.columns}
 
     @provide_session()
     def list(self, conf: dict, session: sessionmaker):
